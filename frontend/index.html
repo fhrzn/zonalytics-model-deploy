@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>SKRIPSI WOI</title>    
+    <link href='https://api.mapbox.com/mapbox-gl-js/v1.7.0/mapbox-gl.css' rel='stylesheet' />
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <!-- MDB icon -->
+    <link rel="icon" href="img/mdb-favicon.ico" type="image/x-icon">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+    <!-- Google Fonts Roboto -->
+    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"> -->
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
+    <!-- Material Design Bootstrap -->
+    <link rel="stylesheet" href="./assets/css/Chart.min.css">
+    <style>
+        
+    </style>
+</head>
+<body>
+    <div class="custom-container">
+        <nav class="navbar navbar-dark bg-dark">
+            <a class="navbar-brand" href="#">Navbar</a>
+        </nav>
+        <div id="map"></div>
+        <div id="main-content">
+            <div class="row justify-content-end">
+                <div class="col-4">                                        
+                    <div class="align-slef-end card col-12">
+                        <div class="card-body">
+                            <h5 class="card-title"><a>Pilih Provinsi</a></h5>
+                            <select id="select-provinsi" class="custom-select">
+                                <option class="list_provinsi" id="all">Semua Provinsi</option>
+                                <option class="list_provinsi" id="aceh">Aceh</option>
+                                <option class="list_provinsi" id="bali">Bali</option>
+                                <option class="list_provinsi" id="banten">Banten</option>
+                                <option class="list_provinsi" id="bengkulu">Bengkulu</option>
+                                <option class="list_provinsi" id="di_yogyakarta">D.I. Yogyakarta</option>
+                                <option class="list_provinsi" id="dki_jakarta">DKI Jakarta</option>
+                                <option class="list_provinsi" id="gorontalo">Gorontalo</option>
+                                <option class="list_provinsi" id="jambi">Jambi</option>
+                                <option class="list_provinsi" id="jawa_barat">Jawa Barat</option>
+                                <option class="list_provinsi" id="jawa_tengah">Jawa Tengah</option>
+                                <option class="list_provinsi" id="jawa_timur">Jawa Timur</option>
+                                <option class="list_provinsi" id="kalimantan_barat">Kalimantan Barat</option>
+                                <option class="list_provinsi" id="kalimantan_selatan">Kalimantan Selatan</option>
+                                <option class="list_provinsi" id="kalimantan_tengah">Kalimantan Tengah</option>
+                                <option class="list_provinsi" id="kalimantan_timur">Kalimantan Timur</option>
+                                <option class="list_provinsi" id="kalimantan_utara">Kalimantan Utara</option>
+                                <option class="list_provinsi" id="kepulauan_bangka_belitung">Kep. Bangka Belitung</option>
+                                <option class="list_provinsi" id="kepulauan_riau">Kep. Riau</option>
+                                <option class="list_provinsi" id="lampung">Lampung</option>
+                                <option class="list_provinsi" id="maluku_utara">Maluku Utara</option>
+                                <option class="list_provinsi" id="maluku">Maluku</option>
+                                <option class="list_provinsi" id="nusa_tenggara_barat">Nusa Tenggara Barat</option>
+                                <option class="list_provinsi" id="nusa_tenggara_timur">Nusa Tenggara Timur</option>
+                                <option class="list_provinsi" id="papua_barat">Papua Barat</option>
+                                <option class="list_provinsi" id="papua">Papua</option>
+                                <option class="list_provinsi" id="riau">Riau</option>
+                                <option class="list_provinsi" id="sulawesi_barat">Sulawesi Barat</option>
+                                <option class="list_provinsi" id="sulawesi_selatan">Sulawesi Selatan</option>
+                                <option class="list_provinsi" id="sulawesi_tengah">Sulawesi Tengah</option>
+                                <option class="list_provinsi" id="sulawesi_tenggara">Sulawesi Tenggara</option>
+                                <option class="list_provinsi" id="sulawesi_utara">Sulawesi Utara</option>
+                                <option class="list_provinsi" id="sumatera_barat">Sumatera Barat</option>
+                                <option class="list_provinsi" id="sumatera_selatan">Sumatera Selatan</option>
+                                <option class="list_provinsi" id="sumatera_utara">Sumatera Utara</option>
+                            </select>
+                        </div>  
+                    </div>
+                    <div class="align-self-end card col-12">                                                                      
+                        <div class="card-body">                            
+                            <h5 class="card-title"><a>Analisis Sentimen</a></h5>
+                            <canvas id="myChart"></canvas>           
+                        </div>            
+                    </div>
+                    <div class="align-self-end">
+                        <div role="alert" aria-live="assertive" aria-atomic="true" class="toast" data-autohide="true" data-delay="3000">                            
+                            <div class="toast-body bg-warning">
+                                <span class="text-black">Data sentimen tidak ditemukan!</span>                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>            
+        </div>
+    </div>
+
+<script src='https://api.mapbox.com/mapbox-gl-js/v1.7.0/mapbox-gl.js'></script>
+<script type="text/javascript" src="./assets/js/jquery.min.js"></script>
+<script type="text/javascript" src="./assets/js/popper.min.js"></script>
+<script type="text/javascript" src="./assets/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="./assets/js/Chart.bundle.min.js"></script>
+<script src="./assets/js/scripts.js"></script>
+<script>
+    $(document).ready(function() {
+        allData()
+        settingMapbox()                
+    })
+</script>
+</body>
+</html>
