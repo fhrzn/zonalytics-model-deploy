@@ -1,6 +1,7 @@
 let dataset = []
 let provinsi = []
 let map;
+let totalData;
 let sentiment;
 let koordinat = [
     {
@@ -243,8 +244,8 @@ let koordinat = [
     }
   ]
 const popup = new mapboxgl.Popup();
-let pieChart;
-/**
+let pieChart, barChart;
+/** 
  * Request API
  */
 const allData = () => {    
@@ -256,7 +257,12 @@ const allData = () => {
         console.log(provinsi)
     })
     $.get('http://localhost:5000/api/sentiment', (data, status) => {
-        sentiment = data.data                
+        sentiment = data.data
+        totalData = data.total
+        console.log('init');
+        console.log(sentiment);
+        console.log(totalData);
+        
         initChart(sentiment)
     })
 }
@@ -265,6 +271,18 @@ const dataByProv = (prov) => {
     $.get(`http://localhost:5000/api/sentiment/${prov}`, (data, status) => {
         sentiment = data.data        
         settingChart(sentiment)
+    })
+}
+
+const dataAll = () => {
+    $.get('http://localhost:5000/api/sentiment', (data, status) => {
+        sentiment = data.data
+        dataSentiment = {
+          1: sentiment[0],
+          2: sentiment[1],
+          3: sentiment[2]
+        }      
+        settingChart(dataSentiment)
     })
 }
 
@@ -353,6 +371,11 @@ const initChart = (dataSentiment) => {
     var ctx = $('#myChart');
     var ctx = 'myChart';
 
+    // var ctxBar = document.getElementById('barChart');
+    // var ctxBar = document.getElementById('barChart').getContext('2d');
+    // var ctxBar = $('#barChart');
+    // var ctxBar = 'barChart';
+
     var data = {
         datasets: [{
             data: dataSentiment,
@@ -374,11 +397,35 @@ const initChart = (dataSentiment) => {
     pieChart = new Chart(ctx, {
         type: 'pie',
         data: data,
+        options: {
+            tooltips: {
+                callbacks: {
+                    label: function(tooltipItem, data) {
+                        var percentage = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index] || '';
+                        var label = data.labels[tooltipItem.index]
+                        console.log(label);
+                        console.log(percentage);
 
+                        if (label) {
+                            label += ': ';
+                        }
+                        label += `${((percentage/totalData)*100).toFixed(2)}%`;
+                        
+                        return label;
+                    }
+                }
+            }
+        }
     })
+
+    // barChart = new Chart(ctxBar, {
+    //     type: 'bar',
+    //     data: data
+    // })
 }
 
 const settingChart = (dataSentiment) => {    
+    console.log(dataSentiment);    
     pieChart.data.datasets[0].data = [dataSentiment[1], dataSentiment[2], dataSentiment[3]]    
     pieChart.update();
 }
@@ -396,6 +443,7 @@ $('#select-provinsi').on('change', function() {
           essential: true
         })
       })
+      dataAll()
     } else {
       provinsi.forEach((value, index) => {
         map.setPaintProperty(value, 'fill-opacity', 0.3)
@@ -426,3 +474,10 @@ $('#select-provinsi').on('change', function() {
       }
     }    
 })
+
+const requestIntervally = () => {
+    let timeout = 1000 * 60 * 10
+    setTimeout(run = () => {        
+        setTimeout(run, timeout)
+    }, timeout);
+}

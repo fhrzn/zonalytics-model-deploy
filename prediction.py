@@ -9,6 +9,8 @@ import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 import pandas as pd
 import json
+import sys
+from sklearn.neighbors import KNeighborsClassifier
 
 def tweet_cleaner(tweet):  
   stop_words = set(stopwords.words('indonesian'))
@@ -49,26 +51,51 @@ def tweet_cleaner(tweet):
   result = re.sub(' +', ' ', result)
   return result
 
-def tfidf(data, length_new_data):  
-  print("preprocessing...")
-  # preprocessing
+def progress(count, total, status=''):
+    bar_len = 60
+    filled_len = int(round(bar_len * count / float(total)))
+
+    percents = round(100.0 * count / float(total), 1)
+    bar = '=' * filled_len + '-' * (bar_len - filled_len)
+
+    sys.stdout.write('[%s] %s%s ...%s\r' % (bar, percents, '%', status))
+    sys.stdout.flush()
+
+def stemming(data):
+  print('stemming...')
+  progress(0, len(data), status='Preparing...')
   output_text = []
   for item in data.text.to_list():
     clean_tweet = tweet_cleaner(item)
     output_text.append(clean_tweet)
+    progress(len(output_text), len(data), status=f'Successfully stem {len(output_text)} of {len(data)}')
 
-  data['stem_text'] = output_text
+  return output_text
+
+
+def tfidf(data, new_data):  
+  print("preprocessing...")
+  
+  # # preprocessing
+  # output_text = []
+  # for item in data.text.to_list():
+  #   clean_tweet = tweet_cleaner(item)
+  #   output_text.append(clean_tweet)
+    
+  data['stem_text'] = stemming(data)
+  new_data['stem_text'] = stemming(new_data)
 
   print("tf-idf...")
   tfidf = TfidfVectorizer(sublinear_tf=True, min_df=5, norm='l2', encoding='latin-1', ngram_range=(1,2))
   feature = tfidf.fit_transform(data['stem_text']).toarray()
+  new_feature = tfidf.transform(new_data['stem_text']).toarray()
 
-  return feature[-length_new_data:]
+  return new_feature
 
 def predict(data):    
   print("merging data...")
   # merge data
-  old_data = pd.read_csv('E:/myproject/SKRIPSI/data/data-dummy.csv')
+  old_data = pd.read_csv('E:/myproject/SKRIPSI/data/data-kombinasi-terbaik.csv')
   new_data = pd.DataFrame(data)
   # convert NaN ke 0 integer
   new_data['label'] = 0  
@@ -89,3 +116,33 @@ def predict(data):
   dummy.to_csv('E:/myproject/SKRIPSI/data/data-predicted.csv', index=False, header=True)
   # print('result: ', pred)
   return json.dumps(pred.tolist())
+
+def predict_from_crawling():
+  print('merging data...')
+
+  train_data = pd.read_csv('E:/myproject/SKRIPSI/data/data-kombinasi-terbaik.csv')
+  crawl_data = pd.read_csv('E:/myproject/SKRIPSI/data/data-crawl.csv')
+  predict_data = crawl_data[crawl_data.label == 0]
+
+  # all_data = pd.concat([train_data, crawl_data])
+
+  # feature = tfidf(all_data, len(predict_data))
+
+  feature = tfidf(train_data, predict_data)
+  train_data = train_data.drop('stem_text', axis=1)
+  predict_data = predict_data.drop('stem_text', axis=1)
+
+  knn = pickle.load(open('E:/myproject/SKRIPSI/model/model.pkl', 'rb'))
+  print('predicting...')
+  pred = knn.predict(feature)
+
+  crawl_data.iloc[-len(predict_data):, -1:] = pred
+
+  print('done...')
+  
+  print('saving new predicted data...')
+
+  crawl_data.to_csv('E:/myproject/SKRIPSI/data/data-crawl.csv', index=False, header=True)
+  print(crawl_data.tail())
+
+  return "predict done.. refresh page to update maps"

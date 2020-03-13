@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>SKRIPSI WOI</title>    
+    <title>SKRIPSI</title>    
     <link href='https://api.mapbox.com/mapbox-gl-js/v1.7.0/mapbox-gl.css' rel='stylesheet' />
     <link rel="stylesheet" href="./assets/css/style.css">
     <!-- MDB icon -->
@@ -78,6 +78,12 @@
                             <canvas id="myChart"></canvas>           
                         </div>            
                     </div>
+                    <!-- <div class="align-self-end card col-12">                                                                      
+                        <div class="card-body">                            
+                            <h5 class="card-title"><a>Analisis Sentimen</a></h5>
+                            <canvas id="barChart"></canvas>           
+                        </div>            
+                    </div> -->
                     <div class="align-self-end">
                         <div role="alert" aria-live="assertive" aria-atomic="true" class="toast" data-autohide="true" data-delay="3000">                            
                             <div class="toast-body bg-warning">
@@ -99,7 +105,8 @@
 <script>
     $(document).ready(function() {
         allData()
-        settingMapbox()                
+        settingMapbox()
+        requestIntervally()
     })
 </script>
 </body>
