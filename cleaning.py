@@ -2,6 +2,7 @@ import pandas as pd
 
 from TwitterAPI import TwitterAPI
 api = TwitterAPI('OOheRS0hK5FQaj6iL75XTILke', 'aDeZ9i3dZ18KjtDiEcNf683hwjKC4MLyAR3v1f1FqHiW3QdNEz', '831073699411275776-7HDtuctKY7orzuEIRPhEkChTgo2JJ5n', 'txslgzywJrEMmy6zi2e8AdpikcqsWo6k9hueSJMibSeZx')
+# api = TwitterAPI('jToPvkoi8cePreVNCwWsn0Xnz', 'V7N9XSmU3lfNyKurDsje9vxo6wM6GZIcpJnAjUYmkVglhIaqZg', '1088104775588012032-W9v2m9OoD9ToXrBonS45iBVzkiocLK', 'UWN3V01IbXZIKWbSZGD4o6hYpOXLMmyATV3H42W8gT1nJ')
 
 def rerequest(df):
     # print('rerequest')
@@ -73,7 +74,7 @@ def find_kota(query, prov, kota):
             return prov.iloc[i][1]  
 
 def clean(df):
-    print('clean')
+    # print('clean')
     df_rerequest = rerequest(df)
     # print(df_rerequest.head(), end='\n\n')
     df_location = data_location(df_rerequest)

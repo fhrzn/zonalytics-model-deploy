@@ -11,6 +11,7 @@ import pandas as pd
 import json
 import sys
 from sklearn.neighbors import KNeighborsClassifier
+import cleaning
 
 def tweet_cleaner(tweet):  
   stop_words = set(stopwords.words('indonesian'))
@@ -117,12 +118,18 @@ def predict(data):
   # print('result: ', pred)
   return json.dumps(pred.tolist())
 
-def predict_from_crawling():
-  print('merging data...')
-
+def predict_from_crawling():  
   train_data = pd.read_csv('E:/myproject/SKRIPSI/data/data-kombinasi-terbaik.csv')
   crawl_data = pd.read_csv('E:/myproject/SKRIPSI/data/data-crawl.csv')
+  
+  # crawl_data = cleaning.remove_duplicate(crawl_data)
+
   predict_data = crawl_data[crawl_data.label == 0]
+  # print(len(predict_data))
+
+  # if len(predict_data) <= 0:
+  #   print('masuk')
+  #   return 'no new data found'
 
   # all_data = pd.concat([train_data, crawl_data])
 

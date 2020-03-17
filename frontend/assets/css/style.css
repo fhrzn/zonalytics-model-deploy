@@ -19,3 +19,27 @@
 .card {
     margin-bottom: 15px;
 }
+.carousel-control-prev > img,
+.carousel-control-next > img {    
+    height: 15px;
+    width: 15px;
+}
+
+.carousel-control-prev {
+    margin-left: -35px;
+}
+.carousel-control-next {
+    margin-right: -35px;
+}
+/* .carousel-control-next-icon:after
+{
+  content: '>';
+  font-size: 55px;
+  color: red;
+}
+
+.carousel-control-prev-icon:after {
+  content: '<';
+  font-size: 55px;
+  color: red;
+} */

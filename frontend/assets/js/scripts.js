@@ -371,10 +371,10 @@ const initChart = (dataSentiment) => {
     var ctx = $('#myChart');
     var ctx = 'myChart';
 
-    // var ctxBar = document.getElementById('barChart');
-    // var ctxBar = document.getElementById('barChart').getContext('2d');
-    // var ctxBar = $('#barChart');
-    // var ctxBar = 'barChart';
+    var ctxBar = document.getElementById('barChart');
+    var ctxBar = document.getElementById('barChart').getContext('2d');
+    var ctxBar = $('#barChart');
+    var ctxBar = 'barChart';
 
     var data = {
         datasets: [{
@@ -395,21 +395,25 @@ const initChart = (dataSentiment) => {
     };
 
     pieChart = new Chart(ctx, {
-        type: 'pie',
+        type: 'doughnut',
         data: data,
         options: {
             tooltips: {
                 callbacks: {
                     label: function(tooltipItem, data) {
+                        let total = 0;                        
+                        data.datasets[tooltipItem.datasetIndex].data.forEach((curr) => {                          
+                            if (curr!=undefined) {
+                                total+=curr                              
+                            }
+                        })
                         var percentage = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index] || '';
-                        var label = data.labels[tooltipItem.index]
-                        console.log(label);
-                        console.log(percentage);
-
+                        var label = data.labels[tooltipItem.index]                        
+                        
                         if (label) {
                             label += ': ';
                         }
-                        label += `${((percentage/totalData)*100).toFixed(2)}%`;
+                        label += `${((percentage/total)*100).toFixed(2)}% dari ${total} data`;
                         
                         return label;
                     }
@@ -418,16 +422,63 @@ const initChart = (dataSentiment) => {
         }
     })
 
-    // barChart = new Chart(ctxBar, {
-    //     type: 'bar',
-    //     data: data
-    // })
+    barChart = new Chart(ctxBar, {
+        type: 'bar',
+        data: {
+          labels: ['Positif', 'Negatif', 'Netral'],
+          datasets: [{
+              label: 'Jumlah Data Sentimen',
+              data: dataSentiment,
+              backgroundColor: [
+                  // 'rgba(255, 99, 132, 0.2)',
+                  // 'rgba(54, 162, 235, 0.2)',
+                  // 'rgba(255, 206, 86, 0.2)',                  
+                  '#4CAF50',
+                  '#FF5252',
+                  '#455A64'
+              ],
+              // borderColor: [
+              //     'rgba(255, 99, 132, 1)',
+              //     'rgba(54, 162, 235, 1)',
+              //     'rgba(255, 206, 86, 1)',
+              // ],
+              // borderWidth: 1
+          }]
+        },
+        options: {
+            // layout: {
+            //     padding: {
+            //         left: 50,
+            //         right:50,
+            //         top:0,
+            //         bottom:0
+            //     }
+            // },
+            legend: {
+              display: false,
+              labels: {
+                  fontColor: "white",
+                  fontSize: 18
+              }
+            },  
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    })
 }
 
 const settingChart = (dataSentiment) => {    
     console.log(dataSentiment);    
     pieChart.data.datasets[0].data = [dataSentiment[1], dataSentiment[2], dataSentiment[3]]    
     pieChart.update();
+
+    barChart.data.datasets[0].data = [dataSentiment[1], dataSentiment[2], dataSentiment[3]]    
+    barChart.update();
 }
 
 $('#select-provinsi').on('change', function() {
@@ -476,8 +527,25 @@ $('#select-provinsi').on('change', function() {
 })
 
 const requestIntervally = () => {
-    let timeout = 1000 * 60 * 10
-    setTimeout(run = () => {        
+    let timeout = 1000 * 60 * 60
+    setTimeout(run = () => {              
+        console.log('executed');                
+        // $.get('http://localhost:5000/api/fetch-data', (data, status) => {
+        //     console.log('status ', status);
+        //     if (status == 'success') {
+        //         console.log('fetching done. refresh now');
+        //         $('.toast').toast('show')
+        //     }
+        // })
         setTimeout(run, timeout)
-    }, timeout);
+    }, timeout);  
+}
+
+const doLogin = (e) => {
+    e.preventDefault()
+    let email = $("input[name='email']").val()
+    let password = $("input[name='password']").val()
+    console.log(email, password);
+    
+    
 }

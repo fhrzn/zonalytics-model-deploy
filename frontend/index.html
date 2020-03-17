@@ -8,24 +8,47 @@
     <link href='https://api.mapbox.com/mapbox-gl-js/v1.7.0/mapbox-gl.css' rel='stylesheet' />
     <link rel="stylesheet" href="./assets/css/style.css">
     <!-- MDB icon -->
-    <link rel="icon" href="img/mdb-favicon.ico" type="image/x-icon">
+    <link rel="icon" href="./assets/mdb-favicon.ico" type="image/x-icon">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
     <!-- Google Fonts Roboto -->
     <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"> -->
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
-    <!-- Material Design Bootstrap -->
+    <!-- Chart JS -->
     <link rel="stylesheet" href="./assets/css/Chart.min.css">
+    <link rel="stylesheet" href="./assets/css/open-iconic-bootstrap.min.css">
     <style>
         
     </style>
 </head>
 <body>
     <div class="custom-container">
-        <nav class="navbar navbar-dark bg-dark">
-            <a class="navbar-brand" href="#">Navbar</a>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand" href="#">SKRIPSI</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+              <div class="navbar-nav">
+                <!-- <a class="nav-item nav-link active" href="#">Home <span class="sr-only">(current)</span></a> -->
+                <a class="nav-item nav-link" href="#" data-toggle="modal" data-target="#exampleModal">Login</a>
+                <!-- <a class="nav-item nav-link" href="#">Pricing</a> -->
+                <!-- <a class="nav-item nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a> -->
+              </div>
+            </div>
         </nav>
+        <!-- <nav class="navbar navbar-dark bg-dark">
+            <a class="navbar-brand" href="#">SKRIPSI</a>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                  <a class="nav-item nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
+                  <a class="nav-item nav-link" href="#">Login</a>
+                  <a class="nav-item nav-link" href="#">Pricing</a>
+                  <a class="nav-item nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                </div>
+            </div>
+        </nav> -->
         <div id="map"></div>
         <div id="main-content">
             <div class="row justify-content-end">
@@ -75,24 +98,69 @@
                     <div class="align-self-end card col-12">                                                                      
                         <div class="card-body">                            
                             <h5 class="card-title"><a>Analisis Sentimen</a></h5>
-                            <canvas id="myChart"></canvas>           
+                            <div id="carouselExampleControls" class="carousel slide" data-ride="false" data-interval='false'>
+                                <div class="carousel-inner">
+                                    <div class="carousel-item active">                                        
+                                        <canvas id="myChart"></canvas>
+                                  </div>
+                                  <div class="carousel-item">                                    
+                                        <canvas id="barChart"></canvas>
+                                  </div>
+                                </div>                                
+                                <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                                    <img src="./assets/img/caret-left.svg">                                  
+                                </a>
+                                <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                                    <img src="./assets/img/caret-right.svg">
+                                </a>
+                            </div>                              
                         </div>            
                     </div>
-                    <!-- <div class="align-self-end card col-12">                                                                      
-                        <div class="card-body">                            
-                            <h5 class="card-title"><a>Analisis Sentimen</a></h5>
-                            <canvas id="barChart"></canvas>           
-                        </div>            
-                    </div> -->
                     <div class="align-self-end">
                         <div role="alert" aria-live="assertive" aria-atomic="true" class="toast" data-autohide="true" data-delay="3000">                            
                             <div class="toast-body bg-warning">
                                 <span class="text-black">Data sentimen tidak ditemukan!</span>                                
                             </div>
                         </div>
-                    </div>
+                        <!-- <div role="alert" aria-live="assertive" aria-atomic="true" class="update-data" data-autohide="true" data-delay="3000">                            
+                            <div class="toast-body bg-info">
+                                <span class="text-white">Reload untuk update data</span>                                
+                            </div>
+                        </div> -->
+                    </div>                    
                 </div>
             </div>            
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Masuk sebagai Pakar</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="#" onsubmit="doLogin()">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1">Email address</label>
+                          <input type="email" class="form-control" id="exampleInputEmail1" name="email" aria-describedby="emailHelp">                          
+                        </div>
+                        <div class="form-group">
+                          <label for="exampleInputPassword1">Password</label>
+                          <input type="password" class="form-control" id="exampleInputPassword1" name="password">
+                        </div>                        
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -106,7 +174,9 @@
     $(document).ready(function() {
         allData()
         settingMapbox()
-        requestIntervally()
+        setTimeout(() => {
+            requestIntervally()            
+        }, 3000);
     })
 </script>
 </body>
