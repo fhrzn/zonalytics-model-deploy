@@ -74,16 +74,16 @@ def find_kota(query, prov, kota):
             return prov.iloc[i][1]  
 
 def clean(df):
-    # print('clean')
+    print('cleaning...')
     df_rerequest = rerequest(df)
-    # print(df_rerequest.head(), end='\n\n')
+    print(df_rerequest.head(), end='\n\n')
     df_location = data_location(df_rerequest)
-    # print(df_location.head(), end='\n\n')
+    print(df_location.head(), end='\n\n')
     df_duplicate = remove_duplicate(df_location)
-    # print(df_duplicate.head(), end='\n\n')
+    print(df_duplicate.head(), end='\n\n')
     df_city = data_city(df_duplicate)
-    # print(df_city.head(), end='\n\n')
+    print(df_city.head(), end='\n\n')
     df_mapping = mapping_data(df_city)
 
-    # print(df_mapping.head())
+    print(df_mapping.head())
     return df_mapping
