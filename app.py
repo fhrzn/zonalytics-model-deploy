@@ -7,7 +7,7 @@ import dataset
 import pandas as pd
 import os
 
-app = Flask(__name__, static_url_path='/asset')
+app = Flask(__name__, static_folder='/asset')
 
 CORS(app)
 
@@ -19,10 +19,10 @@ def home():
     # return render_template('index.html')
     return 'HELLO WORLD'
 
-@app.route('/js/geo/<path:path>', methods=['GET'])
+@app.route('/js/geo/<path:path>')
 def send_js(path):
     # root_dir = os.path.dirname(os.getcwd())
-    return send_from_directory('asset', path)
+    return send_from_directory('./asset', path)
     # return send_from_directory(os.path.join(root_dir, 'asset', 'js'), path)
     
 @app.route('/api/data', methods=['GET'])
