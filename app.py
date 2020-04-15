@@ -5,6 +5,7 @@ import pickle
 import prediction as clf
 import dataset
 import pandas as pd
+import os
 
 app = Flask(__name__, static_url_path='/asset')
 
@@ -18,9 +19,11 @@ def home():
     # return render_template('index.html')
     return 'HELLO WORLD'
 
-@app.route('/js/geo/<path:path>')
+@app.route('/js/geo/<path:path>', methods=['GET'])
 def send_js(path):
+    # root_dir = os.path.dirname(os.getcwd())
     return send_from_directory('asset', path)
+    # return send_from_directory(os.path.join(root_dir, 'asset', 'js'), path)
     
 @app.route('/api/data', methods=['GET'])
 def getAllData():
