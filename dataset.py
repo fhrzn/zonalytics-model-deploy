@@ -10,36 +10,36 @@ import csv
 from io import StringIO
 
 def allData():
-    df = pd.read_csv('E:/myproject/SKRIPSI/data/data-kombinasi-terbaik.csv')
-    crawl = pd.read_csv('E:/myproject/SKRIPSI/data/data-crawl.csv')
+    df = pd.read_csv('./data/data-kombinasi-terbaik.csv')
+    crawl = pd.read_csv('./data/data-crawl.csv')
     df = pd.concat([df, crawl]).reset_index(drop=True)
     return json.loads(df.to_json(orient='records'))
 
 def dataByProvince(prov):    
-    df = pd.read_csv('E:/myproject/SKRIPSI/data/data-kombinasi-terbaik.csv')
-    crawl = pd.read_csv('E:/myproject/SKRIPSI/data/data-crawl.csv')
+    df = pd.read_csv('./data/data-kombinasi-terbaik.csv')
+    crawl = pd.read_csv('./data/data-crawl.csv')
     df = pd.concat([df, crawl]).reset_index(drop=True)
     df = df[df.provinsi == prov]
     return json.loads(df.to_json(orient='records'))
 
 def getListProvince():
-    df = pd.read_csv('E:/myproject/SKRIPSI/data/data-kombinasi-terbaik.csv')
-    crawl = pd.read_csv('E:/myproject/SKRIPSI/data/data-crawl.csv')
+    df = pd.read_csv('./data/data-kombinasi-terbaik.csv')
+    crawl = pd.read_csv('./data/data-crawl.csv')
     df = pd.concat([df, crawl]).reset_index(drop=True)
     listdf = df.provinsi.unique().tolist()
     listdf.sort()
     return listdf
 
 def allSentiment():
-    df = pd.read_csv('E:/myproject/SKRIPSI/data/data-kombinasi-terbaik.csv')
-    crawl = pd.read_csv('E:/myproject/SKRIPSI/data/data-crawl.csv')
+    df = pd.read_csv('./data/data-kombinasi-terbaik.csv')
+    crawl = pd.read_csv('./data/data-crawl.csv')
     df = pd.concat([df, crawl]).reset_index(drop=True)
     labels = df.groupby('label').label.count()
     return json.loads(labels.to_json(orient='records'))
 
 def sentimentByProv(prov):
-    df = pd.read_csv('E:/myproject/SKRIPSI/data/data-kombinasi-terbaik.csv')
-    crawl = pd.read_csv('E:/myproject/SKRIPSI/data/data-crawl.csv')
+    df = pd.read_csv('./data/data-kombinasi-terbaik.csv')
+    crawl = pd.read_csv('./data/data-crawl.csv')
     df = pd.concat([df, crawl]).reset_index(drop=True)
     df = df[df.provinsi==prov]
     labels = df.groupby('label').label.count()
@@ -57,8 +57,8 @@ def progress(count, total, status=''):
 
 def crawlData(**kwargs):
     print('crawl data...')
-    df = pd.read_csv('E:/myproject/SKRIPSI/data/data-kombinasi-terbaik.csv')
-    crawl = pd.read_csv('E:/myproject/SKRIPSI/data/data-crawl.csv')
+    df = pd.read_csv('./data/data-kombinasi-terbaik.csv')
+    crawl = pd.read_csv('./data/data-crawl.csv')
     df_concat = pd.concat([df, crawl])
 
     api = TwitterAPI('OOheRS0hK5FQaj6iL75XTILke', 'aDeZ9i3dZ18KjtDiEcNf683hwjKC4MLyAR3v1f1FqHiW3QdNEz', '831073699411275776-7HDtuctKY7orzuEIRPhEkChTgo2JJ5n', 'txslgzywJrEMmy6zi2e8AdpikcqsWo6k9hueSJMibSeZx')
@@ -131,7 +131,7 @@ def crawlData(**kwargs):
     data = cleaning.clean(df)
     print("data", len(data))
     data['label'] = 0    
-    old_data = pd.read_csv('E:/myproject/SKRIPSI/data/data-crawl.csv')    
+    old_data = pd.read_csv('./data/data-crawl.csv')    
 
     if len(old_data) > 0:        
         same = data['text'].isin(old_data['text'])
@@ -141,12 +141,12 @@ def crawlData(**kwargs):
         return 'no new data'
 
     old_data = old_data.append(data, ignore_index = True)        
-    old_data.to_csv('E:/myproject/SKRIPSI/data/data-crawl.csv', index=False, header=True)
+    old_data.to_csv('./data/data-crawl.csv', index=False, header=True)
     
     return prediction.predict_from_crawling()
 
 def getPredictedData():
-    crawl = pd.read_csv('E:/myproject/SKRIPSI/data/data-crawl.csv')
+    crawl = pd.read_csv('./data/data-crawl.csv')
     crawl['tweet_id'] = crawl['tweet_id'].apply(str)
     predict = crawl[crawl.label!=0]
     # remove unused column
@@ -157,7 +157,7 @@ def getPredictedData():
     return json.loads(predict.to_json(orient='records'))
 
 def getTrainingData():
-    training = pd.read_csv('E:/myproject/SKRIPSI/data/data-kombinasi-terbaik.csv')
+    training = pd.read_csv('./data/data-kombinasi-terbaik.csv')
     training['tweet_id'] = training['tweet_id'].apply(str)
     training['label'] = training['label'].apply(int)
     predict = training[training.label!=0]
@@ -169,8 +169,8 @@ def getTrainingData():
     return json.loads(predict.to_json(orient='records'))
 
 def allSentimentByYear():
-    data = pd.read_csv('E:/myproject/SKRIPSI/data/data-kombinasi-terbaik.csv')
-    crawl = pd.read_csv('E:/myproject/SKRIPSI/data/data-crawl.csv')
+    data = pd.read_csv('./data/data-kombinasi-terbaik.csv')
+    crawl = pd.read_csv('./data/data-crawl.csv')
 
     predict = pd.concat([data, crawl], sort=False)
     predict = predict[predict.label!=0]
@@ -228,8 +228,8 @@ def allSentimentByYear():
     }))
 
 def sentimentByYearByProv(prov):
-    data = pd.read_csv('E:/myproject/SKRIPSI/data/data-kombinasi-terbaik.csv')
-    crawl = pd.read_csv('E:/myproject/SKRIPSI/data/data-crawl.csv')
+    data = pd.read_csv('./data/data-kombinasi-terbaik.csv')
+    crawl = pd.read_csv('./data/data-crawl.csv')
 
     predict = pd.concat([data, crawl], sort=False)
     predict = predict[predict.provinsi == prov]
@@ -302,15 +302,15 @@ def addTrainingData(data):
 
     # print(tweet['tweet_id'])
     
-    training = pd.read_csv('E:/myproject/SKRIPSI/data/data-kombinasi-terbaik.csv')    
+    training = pd.read_csv('./data/data-kombinasi-terbaik.csv')    
     train_df = training.append(tweet, ignore_index=True)
     train_df['label'] = train_df['label'].apply(int)
-    train_df.to_csv('E:/myproject/SKRIPSI/data/data-kombinasi-terbaik.csv', index=None, header=True)
+    train_df.to_csv('./data/data-kombinasi-terbaik.csv', index=None, header=True)
 
-    crawl = pd.read_csv('E:/myproject/SKRIPSI/data/data-crawl.csv')
+    crawl = pd.read_csv('./data/data-crawl.csv')
     # crawl_df = crawl[crawl.tweet_id != tweet['tweet_id']]
     crawl_df = crawl.query('tweet_id != {}'.format(tweet['tweet_id']))
     # print(crawl_df.head())
-    crawl_df.to_csv('E:/myproject/SKRIPSI/data/data-crawl.csv', index=None, header=True)
+    crawl_df.to_csv('./data/data-crawl.csv', index=None, header=True)
 
     return 'add training data done.'

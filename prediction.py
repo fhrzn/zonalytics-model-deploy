@@ -21,7 +21,7 @@ import matplotlib.pyplot as plt
 def tweet_cleaner(tweet):  
   stop_words = set(stopwords.words('indonesian'))
 
-  dictionary = np.array([word.replace('\n', '') for word in open("E:/myproject/SKRIPSI/data/kata-dasar.txt", 'r').readlines()])
+  dictionary = np.array([word.replace('\n', '') for word in open("./data/kata-dasar.txt", 'r').readlines()])
 
   # stopword tambahan
   stop = ['tp','kl','yg','klo','tpi','yang', 'untuk', 'pada', 'ke', 'para', 'namun', 'menurut', 'antara', 'dia', 'dua', 'ia', 'seperti', 'jika', 'jika', 'sehingga', 'kembali', 'dan', 'tidak', 'ini', 'karena',  'kepada', 'oleh', 'saat', 'harus', 'sementara', 'setelah', 'belum', 'kami', 'sekitar', 'bagi', 'serta', 'di', 'dari', 'telah', 'sebagai', 'masih', 'hal', 'ketika', 'adalah', 'itu', 'dalam', 'bisa', 'bahwa', 'atau', 'hanya', 'kita', 'dengan', 'akan', 'juga', 'ada', 'mereka', 'sudah', 'saya', 'terhadap', 'secara', 'agar', 'lain', 'anda', 'begitu', 'mengapa', 'kenapa', 'yaitu', 'yakni', 'daripada', 'itulah', 'lagi', 'maka', 'tentang', 'demi', 'dimana', 'kemana', 'pula', 'sambil', 'sebelum', 'sesudah', 'supaya', 'guna', 'kah', 'pun', 'sampai', 'sedangkan', 'selagi', 'sementara', 'tetapi', 'apakah', 'kecuali', 'sebab', 'selain', 'seolah', 'seraya', 'seterusnya', 'tanpa', 'agak', 'boleh', 'dapat', 'dsb', 'dst', 'dll', 'dahulu', 'dulunya', 'anu', 'demikian', 'tapi', 'ingin', 'juga', 'nggak', 'mari', 'nanti', 'melainkan', 'oh', 'ok', 'seharusnya', 'sebetulnya',  'setiap', 'setidaknya', 'sesuatu', 'pasti', 'saja', 'toh', 'ya', 'walau', 'tolong', 'tentu', 'amat', 'apalagi', 'bagaimanapun']
@@ -111,8 +111,8 @@ def retrain_tfidf(data):
 
 def predict_from_crawling():
   print('predict fromcrawling...')
-  train_data = pd.read_csv('E:/myproject/SKRIPSI/data/data-kombinasi-terbaik.csv')
-  crawl_data = pd.read_csv('E:/myproject/SKRIPSI/data/data-crawl.csv')
+  train_data = pd.read_csv('./data/data-kombinasi-terbaik.csv')
+  crawl_data = pd.read_csv('./data/data-crawl.csv')
 
   predict_data = crawl_data[crawl_data.label == 0]
 
@@ -120,7 +120,7 @@ def predict_from_crawling():
   train_data = train_data.drop('stem_text', axis=1)
   predict_data = predict_data.drop('stem_text', axis=1)
 
-  knn = pickle.load(open('E:/myproject/SKRIPSI/model/model.pkl', 'rb'))
+  knn = pickle.load(open('./model/model.pkl', 'rb'))
   print('predicting...')
   pred = knn.predict(feature)
 
@@ -130,13 +130,13 @@ def predict_from_crawling():
   
   print('saving new predicted data...')
 
-  crawl_data.to_csv('E:/myproject/SKRIPSI/data/data-crawl.csv', index=False, header=True)
+  crawl_data.to_csv('./data/data-crawl.csv', index=False, header=True)
   print(crawl_data.tail())
 
   return "predict done.. refresh page to update maps"
 
 def retrain_model():
-  train_data = pd.read_csv('E:/myproject/SKRIPSI/data/data-kombinasi-terbaik.csv')
+  train_data = pd.read_csv('./data/data-kombinasi-terbaik.csv')
 
   feature = retrain_tfidf(train_data)
   train_data = train_data.drop('stem_text', axis=1)
@@ -156,7 +156,7 @@ def retrain_model():
   # selanjutnya variabel training diatas di fit ke model knn
   # kemudian model knn yang baru di update disimpan
 
-  # knn = pickle.load(open('E:/myproject/SKRIPSI/model/model.pkl', 'rb'))
+  # knn = pickle.load(open('./model/model.pkl', 'rb'))
   knn = KNeighborsClassifier(n_neighbors=28, metric='cosine')
   knn.fit(X_train, y_train)
 
@@ -164,7 +164,7 @@ def retrain_model():
   metrics_acc = metrics.accuracy_score(y_test, y_pred)
 
   # save model
-  pickle.dump(knn, open('E:/myproject/SKRIPSI/model/model.pkl', 'wb'))
+  pickle.dump(knn, open('./model/model.pkl', 'wb'))
   print(metrics_acc)
 
   from sklearn.metrics import confusion_matrix
@@ -182,6 +182,6 @@ def retrain_model():
   plt.xlabel('Predicted')
   plt.ylabel('Actual')
   # plt.show()
-  fig.savefig('E:/myproject/SKRIPSI/plots/conf-matrix-{}.png'.format(date.strftime('%Y-%m-%d')))
+  fig.savefig('./plots/conf-matrix-{}.png'.format(date.strftime('%Y-%m-%d')))
 
   return str(metrics_acc)

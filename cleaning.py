@@ -46,7 +46,7 @@ def remove_duplicate(df):
 
 def data_city(df):
     # print('data city')
-    data_prov = pd.read_csv('E:/myproject/SKRIPSI/data/embedding_kab_kot_prov.csv')
+    data_prov = pd.read_csv('./data/embedding_kab_kot_prov.csv')
     kota = data_prov.kabupaten_kota.to_list()
     kwstr = '|'.join(map(str.lower, kota))
 
@@ -55,7 +55,7 @@ def data_city(df):
 
 def mapping_data(df):
     # print('mapping data')
-    prov = pd.read_csv('E:/myproject/SKRIPSI/data/embedding_kab_kot_prov.csv')
+    prov = pd.read_csv('./data/embedding_kab_kot_prov.csv')
     kota = prov.kabupaten_kota.to_list()
 
     map_prov = []

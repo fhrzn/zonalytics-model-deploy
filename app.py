@@ -1,62 +1,17 @@
 from flask import Flask, jsonify, request, send_from_directory, Response
 from flask_cors import CORS
 import flask
-from flask_mysqldb import MySQL
 import pickle
 import prediction as clf
-import timeit
 import dataset
 import pandas as pd
-from settings import MYSQL_DB, MYSQL_USER, MYSQL_PASSWORD
-import utils
-
-
 
 app = Flask(__name__, static_url_path='/asset')
 
 CORS(app)
 
-app.config['MYSQL_USER'] = MYSQL_USER
-app.config['MYSQL_PASSWORD'] = MYSQL_PASSWORD
-app.config['MYSQL_DB'] = MYSQL_DB
-app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
-
-db = MySQL(app)
-
-# from blueprint_auth import authentication
-
-df = pd.read_csv('E:/myproject/SKRIPSI/data/data-kombinasi-terbaik.csv')
+df = pd.read_csv('./data/data-kombinasi-terbaik.csv')
 length = len(df)
-
-# app.register_blueprint(authentication, url_prefix="/auth")
-
-@app.route('/api/login', methods=['POST'])
-def login():
-    user_email = request.json['email']
-    user_password = request.json['password']
-    user_token = utils.validate_user(user_email, user_password)
-
-    if user_token:
-        # return jsonify({"jwt_token": user_token})
-        return user_token
-    else:
-        return Response(status=401)
-
-@app.route('/api/register', methods=['POST'])
-def register():
-    user_email = request.json['email']
-    user_password = request.json['password']
-    
-    if utils.validate_user_input("authentication", email=user_email, password=user_password):
-        password_hash = utils.generate_hash(user_password)
-        
-        if utils.db_write("""INSERT INTO users (email, password) VALUES (%s, %s)""",
-                    (user_email, password_hash)):
-            return Response(status=201)
-        else:
-            return Response(status=409)
-    else:
-        return Response(status=400)
 
 @app.route('/')
 def home():
