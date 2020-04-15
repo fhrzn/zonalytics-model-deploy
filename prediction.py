@@ -17,7 +17,8 @@ from sklearn import metrics
 from sklearn.metrics import confusion_matrix
 import seaborn as sns
 import matplotlib.pyplot as plt
-
+nltk.download('punkt')
+nltk.download('stopwords')
 def tweet_cleaner(tweet):  
   stop_words = set(stopwords.words('indonesian'))
 
