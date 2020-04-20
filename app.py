@@ -12,7 +12,9 @@ app = Flask(__name__, static_folder='/asset')
 CORS(app)
 
 df = pd.read_csv('./data/data-kombinasi-terbaik.csv')
-length = len(df)
+crawl_df = pd.read_csv('./data/data-crawl.csv')
+new_df = pd.concat([df, crawl_df])
+length = len(new_df)
 
 @app.route('/')
 def home():
@@ -43,7 +45,7 @@ def getListProvince():
 
 @app.route('/api/sentiment', methods=['GET'])
 def getAllSentiment():
-    return jsonify({"data":dataset.allSentiment(), "total":length, "series": dataset.allSentimentByYear()})
+    return jsonify({"data":dataset.allSentiment(), "series": dataset.allSentimentByYear()})
  
 @app.route('/api/sentiment/<prov>', methods=['GET'])
 def getSentimentByProvince(prov):
@@ -90,4 +92,4 @@ def retrainModel():
     return jsonify ({"accuracy": clf.retrain_model()})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)

@@ -35,7 +35,11 @@ def allSentiment():
     crawl = pd.read_csv('./data/data-crawl.csv')
     df = pd.concat([df, crawl]).reset_index(drop=True)
     labels = df.groupby('label').label.count()
-    return json.loads(labels.to_json(orient='records'))
+    # return json.loads(labels.to_json(orient='records'))
+    return json.loads(json.dumps({
+        'data': json.loads(labels.to_json(orient='records')),
+        'length': str(len(df))
+    }))
 
 def sentimentByProv(prov):
     df = pd.read_csv('./data/data-kombinasi-terbaik.csv')
@@ -43,7 +47,11 @@ def sentimentByProv(prov):
     df = pd.concat([df, crawl]).reset_index(drop=True)
     df = df[df.provinsi==prov]
     labels = df.groupby('label').label.count()
-    return json.loads(labels.to_json(orient='index'))
+    # return json.loads(labels.to_json(orient='index'))
+    return json.loads(json.dumps({
+        'data': json.loads(labels.to_json(orient='index')),
+        'length': str(len(df))
+    }))
 
 def progress(count, total, status=''):
     bar_len = 60
